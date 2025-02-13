@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Indie+Flower&display=swap');
-        
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -16,7 +16,7 @@
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
+            overflow: auto;
         }
 
         @keyframes gradientBG {
@@ -37,6 +37,7 @@
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+            overflow: auto;
         }
 
         .container.fade-out {
@@ -184,12 +185,11 @@
                 padding: 10vw;
             }
         }
+
     </style>
 </head>
 <body>
-    <div class="bokeh">
-        <!-- Bokeh elements added by JS -->
-    </div>
+    <div class="bokeh"> <!-- Bokeh elements added by JS --> </div>
     <div class="container">
         <div class="letter"></div>
         <div class="signature"></div>
@@ -219,10 +219,10 @@ So on this Valentine’s Day, I offer you my heart. Keep it safe. I’m yours…
         const signatureElement = document.querySelector('.signature');
         const nextButton = document.querySelector('.next-button');
         const loadingHearts = document.querySelector('.loading-hearts');
-        
+
         let letterIndex = 0;
         let isWriting = true;
-        
+
         // Add cursor element
         const cursor = document.createElement('span');
         cursor.className = 'cursor';
@@ -233,24 +233,24 @@ So on this Valentine’s Day, I offer you my heart. Keep it safe. I’m yours…
                 letter.textContent = loveLetter.substring(0, letterIndex + 1);
                 letter.appendChild(cursor);
                 letterIndex++;
-                
+
                 // Adjust delay based on punctuation
                 const currentChar = loveLetter[letterIndex - 1];
                 let delay = 50; // Default typing speed
-                
+
                 if (/[,.!]/.test(currentChar)) delay = 400;
                 if (/\n/.test(currentChar)) delay = 800;
-                
+
                 setTimeout(writeLetter, delay);
             } else {
                 isWriting = false;
                 cursor.remove();
-                
+
                 // Show signature with animation
                 setTimeout(() => {
                     signatureElement.textContent = signature;
                     signatureElement.classList.add('show');
-                    
+
                     // Show button after signature
                     setTimeout(() => {
                         nextButton.classList.add('show');
@@ -266,7 +266,7 @@ So on this Valentine’s Day, I offer you my heart. Keep it safe. I’m yours…
         nextButton.addEventListener('click', () => {
             document.querySelector('.container').classList.add('fade-out');
             loadingHearts.classList.add('show');
-            
+
             setTimeout(() => {
                 window.location.href = 'game.html'; // Replace with your next page URL
             }, 2000);
@@ -274,3 +274,4 @@ So on this Valentine’s Day, I offer you my heart. Keep it safe. I’m yours…
     </script>
 </body>
 </html>
+``` ▋
