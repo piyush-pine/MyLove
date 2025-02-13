@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Love Game</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
 
@@ -22,7 +19,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        #game-container {
+       #game-container {
             position: relative;
             width: 100%;
             height: 100vh;
@@ -31,6 +28,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .heart {
@@ -252,7 +250,84 @@
     <button class="next-button">Pookie, your next surprise awaits! 🎁💕</button>
 
     <script>
-        // JavaScript code goes here
+        let score = 0;
+        let timeLeft = 30;
+        let gameInterval;
+        let heartInterval;
+
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+        const basket = document.getElementById('basket');
+        const gameContainer = document.getElementById('game-container');
+        const messageElement = document.querySelector('.message');
+        const nextButton = document.querySelector('.next-button');
+        const teddy = document.querySelector('.teddy');
+        const pookieFill = document.querySelector('.pookie-fill');
+
+        function startGame() {
+            gameInterval = setInterval(updateTimer, 1000);
+            heartInterval = setInterval(createHeart, 800);
+            gameContainer.addEventListener('mousemove', moveBasket);
+            gameContainer.addEventListener('touchmove', moveBasket);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.animationDuration = `${3 + Math.random() * 2}s`;
+            gameContainer.appendChild(heart);
+
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+
+            heart.addEventListener('click', () => {
+                score++;
+                scoreElement.textContent = score;
+                heart.remove();
+                updatePookieMeter();
+            });
+        }
+
+        function moveBasket(event) {
+            const touch = event.touches ? event.touches[0] : event;
+            const x = touch.clientX;
+            basket.style.left = `${x - basket.offsetWidth / 2}px`;
+        }
+
+        function updatePookieMeter() {
+            const percentage = Math.min((score / 20) * 100, 100);
+            pookieFill.style.width = `${percentage}%`;
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            clearInterval(heartInterval);
+            gameContainer.removeEventListener('mousemove', moveBasket);
+            gameContainer.removeEventListener('touchmove', moveBasket);
+
+            messageElement.textContent = 'Time\'s up! You collected ' + score + ' hearts!';
+            messageElement.style.opacity = '1';
+            nextButton.style.opacity = '1';
+            teddy.style.bottom = '20px';
+            teddy.style.animation = 'victory 1s infinite';
+        }
+
+        nextButton.addEventListener('click', () => {
+            window.location.href = 'nextpage.html'; // Replace with your next page URL
+        });
+
+        window.onload = startGame;
     </script>
 </body>
 </html>
